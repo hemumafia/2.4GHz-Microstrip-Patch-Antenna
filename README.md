@@ -283,7 +283,7 @@ frequency.
 |---|---|
 | ![E-plane](results/E_plane.png) | ![H-plane](results/H_plane.png) |
 
-# 3D Radiation Pattern
+ **3D Radiation Pattern**
 
 <p align="center">
   <img src="results/3D_pattern.png" width="500">
