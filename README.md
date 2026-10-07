@@ -22,25 +22,25 @@ The final design uses an inset-fed rectangular patch with a 50 Ω lumped port.
 
 ### Project Flow
 
-Design equations
-      ↓
-Calculate initial dimensions
-      ↓
-Create antenna geometry in Python
-      ↓
-Define substrate, ground and patch
-      ↓
-Add inset feed and 50 Ω port
-      ↓
-Generate simulation mesh
-      ↓
-Run FDTD electromagnetic simulation
-      ↓
-Calculate S11 and VSWR
-      ↓
-Calculate far-field radiation characteristics
-      ↓
-Analyze and tune the antenna
+-Design equations
+-      ↓
+-Calculate initial dimensions
+-      ↓
+-Create antenna geometry in Python
+-      ↓
+-Define substrate, ground and patch
+-      ↓
+-Add inset feed and 50 Ω port
+-      ↓
+-Generate simulation mesh
+-      ↓
+-Run FDTD electromagnetic simulation
+-      ↓
+-Calculate S11 and VSWR
+-      ↓
+-Calculate far-field radiation characteristics
+-      ↓
+-Analyze and tune the antenna
 
 ---
 
