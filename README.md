@@ -212,6 +212,10 @@ frequency.
 |---|---|
 | ![E-plane](results/E_plane_polar.png) | ![H-plane](results/H_plane_polar.png) |
 
+| 3D Radiation Pattern |  |
+|---|---|
+| ![3D_pattern](results/3D_pattern.png) |  |
+
 ---
 
 ## 📁 Project Structure
@@ -232,10 +236,76 @@ frequency.
 │   ├── H_plane.png
 │   └── 3D_pattern.png
 │
-├── docs/
-│   └── Project_Report.pdf
-│
-├── simulation/
-│   └── README.md
-│
-└── .gitignore
+└── docs/
+    └── Project_Report.pdf
+```
+
+## Running it
+
+```bash
+python antenna.py     # runs the EM simulation (several minutes)
+python analyze.py     # post-processes results, generates plots + report.txt
+```
+
+`analyze.py` can be re-run on its own after the first simulation — it only
+reads the saved field data, so you don't need to re-run the FDTD solve to
+regenerate plots or tweak post-processing.
+
+**Dependencies:** `openEMS`, `CSXCAD`, `numpy`, `matplotlib`, `h5py`
+
+---
+
+## 🔍 What I Actually Learned
+
+This project taught me more about antennas than any single antenna I'd
+studied before. Antenna parameters are crucial, but antenna design alone
+isn't enough — real-world performance also depends on the operating
+environment, the radiation field, the specific use case the antenna is
+built for, and noise. It's not just about designing an antenna on paper;
+it's about correctly fitting it to practical use. Plots like S11, VSWR, and
+radiation pattern aren't just outputs for a report — they're what let you
+verify a design will actually hold up outside the simulator.
+
+A few concrete debugging lessons from this build, in case they save someone
+else time:
+
+- **A tiny mesh cell anywhere tanks your FDTD timestep.** Modeling finite
+  (35 µm) copper thickness forced a CFL-limited timestep around 1e-13 s,
+  making every run painfully slow. Since skin depth at 2.4 GHz (~1.3 µm) is
+  already far thinner than real copper, zero-thickness PEC is both faster
+  *and* a more accurate idealization.
+- **An inset feed only works if the notch is an actual gap.** My first
+  version had the feed touching the patch on both sides of the "notch,"
+  so changing inset depth did nothing to S11. Changing inset depth is
+  meaningless until you verify the gap geometry is real.
+- **Don't trust a derived plot without checking it against raw data.**
+  My first 3D radiation pattern looked nearly spherical despite a real
+  ~15 dB front-to-back ratio, because it was built from the wrong field
+  array. Cross-checking it against `P_rad`-derived directivity (which the
+  E/H-plane cuts already agreed with) caught the bug.
+
+---
+
+## ⚠️ Limitations
+
+- Conductors are modeled as perfect electric conductors (PEC) — zero
+  conductor loss.
+- The FR4 substrate is modeled with εᵣ = 4.3 only, no dielectric loss
+  tangent — i.e., a lossless dielectric.
+- As a result, the 95.5% radiation efficiency reflects how completely the
+  FDTD simulation's stored energy had radiated out by the solver's end
+  criterion, **not** a hardware efficiency prediction. A fabricated FR4
+  antenna with a realistic loss tangent (~0.02) would show lower efficiency
+  and somewhat wider bandwidth.
+- S11, VSWR, and radiation pattern *shape* (lobe direction, beamwidth, null
+  positions) are geometry/resonance-driven and expected to transfer more
+  directly to a real prototype than the efficiency/gain figures.
+
+---
+
+## 📬 Author
+
+Akkala Hemanth Kumar
+Feedback and corrections welcome — particularly from anyone with RF/antenna
+design experience. Open an issue or reach out directly.
+
