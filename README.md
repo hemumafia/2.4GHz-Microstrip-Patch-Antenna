@@ -356,6 +356,7 @@ else time:
 - **3D pattern:** My first 3D radiation plot looked almost spherical because I
   used the wrong field array. Cross-checking it with E/H-plane results and
   \(P_{rad}\)-derived directivity helped identify and fix the problem.
+              
 **Main lesson:** Always validate the geometry, mesh, raw simulation data, and
 post-processing results instead of trusting a plot simply because it looks
 reasonable.
