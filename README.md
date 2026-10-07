@@ -290,8 +290,8 @@ frequency.
   <img src="results/3D_pattern.png" width="500">
 </p>
 
-Simulated 3D Radiation Pattern is spherical which is not desirable for proper 
-of the results below are the polar plots of E-plane and H-plane.
+Simulated 3D Radiation Pattern is misleading on a dB scale for this 
+front-to-back ratio, so I used E-plane and H-plane polar planes.
 
 | E-plane (polar) | H-plane (polar) |
 |---|---|
@@ -338,32 +338,27 @@ regenerate plots or tweak post-processing.
 
 ## 🔍 What I Actually Learned
 
-This project taught me more about antennas than any single antenna I'd
-studied before. Antenna parameters are crucial, but antenna design alone
-isn't enough — real-world performance also depends on the operating
-environment, the radiation field, the specific use case the antenna is
-built for, and noise. It's not just about designing an antenna on paper;
-it's about correctly fitting it to practical use. Plots like S11, VSWR, and
-radiation pattern aren't just outputs for a report — they're what let you
-verify a design will actually hold up outside the simulator.
+This project taught me that antenna design is more than calculating dimensions.
+Real-world performance also depends on the operating environment, radiation
+characteristics, application, and noise.
+S11, VSWR, and radiation patterns are not just report plots — they help verify
+whether the design behaves as expected.
 
 A few concrete debugging lessons from this build, in case they save someone
 else time:
 
-- **A tiny mesh cell anywhere tanks your FDTD timestep.** Modeling finite
-  (35 µm) copper thickness forced a CFL-limited timestep around 1e-13 s,
-  making every run painfully slow. Since skin depth at 2.4 GHz (~1.3 µm) is
-  already far thinner than real copper, zero-thickness PEC is both faster
-  *and* a more accurate idealization.
-- **An inset feed only works if the notch is an actual gap.** My first
-  version had the feed touching the patch on both sides of the "notch,"
-  so changing inset depth did nothing to S11. Changing inset depth is
-  meaningless until you verify the gap geometry is real.
-- **Don't trust a derived plot without checking it against raw data.**
-  My first 3D radiation pattern looked nearly spherical despite a real
-  ~15 dB front-to-back ratio, because it was built from the wrong field
-  array. Cross-checking it against `P_rad`-derived directivity (which the
-  E/H-plane cuts already agreed with) caught the bug.
+- **Mesh:** A 35 µm copper thickness created a very small mesh cell and reduced
+  the FDTD timestep to around \(10^{-13}\) s. I switched to zero-thickness PEC
+  to improve simulation speed.
+- **Inset feed:** My first inset geometry did not have a real gap, so changing
+  inset depth had little effect on S11. I corrected the geometry to create a
+  true U-shaped inset.
+- **3D pattern:** My first 3D radiation plot looked almost spherical because I
+  used the wrong field array. Cross-checking it with E/H-plane results and
+  \(P_{rad}\)-derived directivity helped identify and fix the problem.
+**Main lesson:** Always validate the geometry, mesh, raw simulation data, and
+post-processing results instead of trusting a plot simply because it looks
+reasonable.
 
 ---
 
