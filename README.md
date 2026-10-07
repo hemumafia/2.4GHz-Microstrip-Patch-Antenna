@@ -213,7 +213,7 @@ frequency.
 | ![E-plane](results/E_plane_polar.png) | ![H-plane](results/H_plane_polar.png) |
 
 | 3D Radiation Pattern |  |
-|---|---|
+|looking like a globe|---|
 | ![3D_pattern](results/3D_pattern.png) |  |
 
 ---
@@ -305,7 +305,10 @@ else time:
 
 ## 📬 Author
 
-Akkala Hemanth Kumar
-Feedback and corrections welcome — particularly from anyone with RF/antenna
-design experience. Open an issue or reach out directly.
+- Akkala Hemanth Kumar
+- Final year Electronics and Communication Engineering
 
+<p align="left">
+  <a href="https://www.linkedin.com/in/hemanth-kumar-akkala/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
+  <a href="mailto:hemanthboy21gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
+</p>
