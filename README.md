@@ -275,56 +275,26 @@ frequency.
 
 ## 📈 Plots
 
-### S11
+| S11 | VSWR |
+|---|---|
+| ![S11](results/S11_plot.png) | ![VSWR](results/VSWR_plot.png) |
 
-![S11](results/S11_plot.png)
+| E-plane | H-plane |
+|---|---|
+| ![E-plane](results/E_plane.png) | ![H-plane](results/H_plane.png) |
 
-S11 is used to evaluate how much of the input signal is reflected from the
-antenna.
+# 3D Radiation Pattern
 
-A lower S11 value indicates better impedance matching at that frequency.
-
----
-
-### VSWR
-
-![VSWR](results/VSWR_plot.png)
-
-VSWR describes the quality of impedance matching between the antenna and the
-50 Ω feed.
-
----
-
-### E-Plane Radiation Pattern
-
-![E-Plane](results/E_plane.png)
-
----
-
-### H-Plane Radiation Pattern
-
-![H-Plane](results/H_plane.png)
-
----
-
-### 3D Radiation Pattern
-
-![3D Radiation Pattern](results/3D_pattern.png)
+<p align="center">
+  <img src="results/3D_pattern.png" width="500">
+</p>
 
 Simulated 3D Radiation Pattern is spherical which is not desirable for proper 
 of the results below are the polar plots of E-plane and H-plane.
 
----
-
-### E-Plane (Polar)
-
-![E-plane](results/E_plane_polar.png)
-
----
-
-### H-Plane (Polar)
-
-![H-plane](results/H_plane_polar.png)
+| E-plane (polar) | H-plane (polar) |
+|---|---|
+| ![E-plane](results/E_plane_polar.png) | ![H-plane](results/H_plane_polar.png) |
 
 ---
 
