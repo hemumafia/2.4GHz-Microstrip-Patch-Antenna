@@ -93,44 +93,476 @@ Analyze and tune the antenna
 
 ---
 
-## 📚 Antenna Design
+## 📐 Antenna Design Calculations
 
-The initial patch dimensions were calculated using standard rectangular
-microstrip patch antenna equations.
+The initial dimensions of the rectangular microstrip patch antenna were
+calculated using standard microstrip antenna design equations.
 
-### Free-Space Wavelength
+### Design Parameters
 
-For an operating frequency of 2.4 GHz:
+| Parameter | Symbol | Value |
+|---|---|---:|
+| Design frequency | \(f_0\) | 2.4 GHz |
+| Relative dielectric constant | \(\epsilon_r\) | 4.3 |
+| Substrate thickness | \(h\) | 1.6 mm |
+| Speed of light | \(c\) | 299,792,458 m/s |
+| Target impedance | \(Z_0\) | 50 Ω |
 
-λ₀ = c / f₀
+---
 
-The free-space wavelength is approximately:
+### 1. Free-Space Wavelength
 
-**λ₀ ≈ 124.9 mm**
+The wavelength corresponding to the operating frequency is:
 
-### Patch Width
+\[
+\lambda_0 = \frac{c}{f_0}
+\]
 
-The initial patch width was calculated using:
+Substituting:
 
-W = c / (2f₀) × √(2 / (εr + 1))
+\[
+\lambda_0 =
+\frac{299792458}{2.4\times10^9}
+\]
 
-### Effective Dielectric Constant
+\[
+\boxed{\lambda_0 \approx 124.91\ mm}
+\]
 
-The effective dielectric constant was calculated to account for the
-field distribution between the substrate and air.
+The free-space wavelength is approximately **124.91 mm**.
 
-### Effective Length
+---
 
-The effective resonant length was calculated using the effective dielectric
-constant.
+### 2. Patch Width
 
-### Fringing-Field Correction
+The initial patch width is calculated using:
 
-Because electromagnetic fields extend beyond the physical edges of the patch,
-a fringing-field correction was applied to obtain the physical patch length.
+\[
+W =
+\frac{c}{2f_0}
+\sqrt{\frac{2}{\epsilon_r+1}}
+\]
 
-The calculated length was then used as the starting point for simulation
-and tuning.
+Substituting:
+
+\[
+W =
+\frac{299792458}
+{2(2.4\times10^9)}
+\sqrt{\frac{2}{4.3+1}}
+\]
+
+\[
+\boxed{W \approx 38.37\ mm}
+\]
+
+Therefore, the initial patch width was approximately **38.37 mm**.
+
+---
+
+### 3. Effective Dielectric Constant
+
+The electromagnetic fields are partly contained inside the dielectric
+substrate and partly in the surrounding air. Therefore, the antenna does
+not behave as if it were completely inside a material having
+\(\epsilon_r=4.3\).
+
+An effective dielectric constant is therefore used:
+
+\[
+\epsilon_{eff}
+=
+\frac{\epsilon_r+1}{2}
++
+\frac{\epsilon_r-1}{2}
+\left(1+\frac{12h}{W}\right)^{-1/2}
+\]
+
+Using:
+
+\[
+\epsilon_r=4.3
+\]
+
+\[
+h=1.6\ mm
+\]
+
+\[
+W=38.37\ mm
+\]
+
+we obtain:
+
+\[
+\epsilon_{eff}
+=
+\frac{4.3+1}{2}
++
+\frac{4.3-1}{2}
+\left(
+1+\frac{12(1.6)}{38.37}
+\right)^{-1/2}
+\]
+
+\[
+\boxed{\epsilon_{eff}\approx3.997}
+\]
+
+Therefore:
+
+\[
+\boxed{\epsilon_{eff}\approx4.00}
+\]
+
+---
+
+### 4. Effective Patch Length
+
+The effective resonant length is calculated as:
+
+\[
+L_{eff}
+=
+\frac{c}
+{2f_0\sqrt{\epsilon_{eff}}}
+\]
+
+Substituting:
+
+\[
+L_{eff}
+=
+\frac{299792458}
+{2(2.4\times10^9)\sqrt{3.997}}
+\]
+
+\[
+\boxed{L_{eff}\approx31.24\ mm}
+\]
+
+This is the **electrical/effective length**, not yet the physical patch
+length.
+
+---
+
+### 5. Fringing-Field Length Extension
+
+The electric field does not stop exactly at the physical edge of the patch.
+It extends slightly into the surrounding air. This is called the
+**fringing field**.
+
+The length extension is calculated using:
+
+\[
+\frac{\Delta L}{h}
+=
+0.412
+\frac{
+(\epsilon_{eff}+0.3)
+\left(\frac{W}{h}+0.264\right)
+}{
+(\epsilon_{eff}-0.258)
+\left(\frac{W}{h}+0.8\right)
+}
+\]
+
+Using:
+
+\[
+\epsilon_{eff}=3.997
+\]
+
+\[
+W=38.37\ mm
+\]
+
+\[
+h=1.6\ mm
+\]
+
+First:
+
+\[
+\frac{W}{h}
+=
+\frac{38.37}{1.6}
+\approx23.98
+\]
+
+Then:
+
+\[
+\frac{\Delta L}{h}
+\approx0.463
+\]
+
+Therefore:
+
+\[
+\Delta L
+=
+0.463(1.6)
+\]
+
+\[
+\boxed{\Delta L\approx0.741\ mm}
+\]
+
+So the fringing field effectively adds approximately **0.741 mm** to
+each radiating edge.
+
+---
+
+### 6. Physical Patch Length
+
+The physical patch length is obtained by subtracting the fringing-field
+extension from both radiating edges:
+
+\[
+L=L_{eff}-2\Delta L
+\]
+
+Substituting:
+
+\[
+L=31.24-2(0.741)
+\]
+
+\[
+\boxed{L\approx29.76\ mm}
+\]
+
+Therefore, the analytically calculated starting dimensions are:
+
+\[
+\boxed{W\approx38.37\ mm}
+\]
+
+\[
+\boxed{L\approx29.76\ mm}
+\]
+
+---
+
+### 7. Analytical Design vs Final Simulation Model
+
+The analytical calculation provides the starting dimensions. The final
+simulation model was tuned to obtain resonance close to 2.4 GHz.
+
+| Parameter | Analytical Starting Value | Final Simulation Model |
+|---|---:|---:|
+| Patch Width | 38.37 mm | 38.37 mm |
+| Patch Length | ~29.76 mm | 28.95 mm |
+| Substrate Width | — | 58 mm |
+| Substrate Length | — | 65 mm |
+| Substrate Thickness | 1.6 mm | 1.6 mm |
+| Feed Width | — | 2 mm |
+| Feed Length | — | 10 mm |
+| Inset Depth | — | 8 mm |
+| Inset Gap | — | 1 mm |
+| Port Resistance | — | 50 Ω |
+
+The difference between the analytical length and final simulated length
+is due to the fact that the analytical equations provide an initial
+design approximation. The final geometry was evaluated using full-wave
+electromagnetic simulation.
+
+---
+
+## 📡 Inset Feed
+
+An inset feed is used to improve impedance matching between the antenna
+and the 50 Ω source.
+
+The feed is moved into the patch by an inset depth rather than connecting
+only at the patch edge.
+
+In this simulation:
+
+\[
+\boxed{\text{Inset depth}=8\ mm}
+\]
+
+\[
+\boxed{\text{Inset gap}=1\ mm}
+\]
+
+\[
+\boxed{\text{Feed width}=2\ mm}
+\]
+
+The final feed position was evaluated through full-wave simulation using
+the S11 response.
+
+---
+
+## 🔌 50 Ω Lumped Port
+
+The antenna is excited using a lumped port with:
+
+\[
+\boxed{Z_0=50\ \Omega}
+\]
+
+A 50 Ω reference impedance is commonly used for RF systems and allows the
+input matching of the antenna to be evaluated using S11 and VSWR.
+
+---
+
+## 🧮 S11
+
+The reflection coefficient is related to S11 by:
+
+\[
+S_{11}=\Gamma
+\]
+
+In decibels:
+
+\[
+S_{11(dB)}
+=
+20\log_{10}|\Gamma|
+\]
+
+A more negative S11 value indicates less reflected power.
+
+For example:
+
+\[
+S_{11}=-10\ dB
+\]
+
+corresponds to approximately 10% reflected power.
+
+The simulated antenna achieved approximately:
+
+\[
+\boxed{S_{11,min}\approx-13.71\ dB}
+\]
+
+at approximately:
+
+\[
+\boxed{f_r\approx2.405\ GHz}
+\]
+
+---
+
+## 📊 VSWR
+
+Voltage Standing Wave Ratio is calculated from the magnitude of the
+reflection coefficient:
+
+\[
+VSWR=
+\frac{1+|\Gamma|}
+{1-|\Gamma|}
+\]
+
+For an ideal matched antenna:
+
+\[
+\boxed{VSWR=1}
+\]
+
+The simulation produced approximately:
+
+\[
+\boxed{VSWR\approx1.52}
+\]
+
+at the resonant frequency.
+
+---
+
+## 📡 Directivity
+
+Directivity describes how strongly the antenna concentrates radiated
+power in a particular direction compared with an isotropic radiator.
+
+The simulated maximum directivity was approximately:
+
+\[
+\boxed{D_{max}\approx6.56\ dBi}
+\]
+
+The conversion from linear directivity to dBi is:
+
+\[
+D_{dBi}=10\log_{10}(D)
+\]
+
+---
+
+## ⚡ Radiation Efficiency
+
+Radiation efficiency is the ratio of radiated power to accepted input
+power:
+
+\[
+\eta=
+\frac{P_{rad}}
+{P_{accepted}}
+\]
+
+The simulation produced approximately:
+
+\[
+\boxed{\eta\approx95.51\%}
+\]
+
+> This is a simulation result from the current model. The substrate is
+> modeled as lossless, and no physical antenna or VNA measurement was
+> performed. Therefore, this value should not be interpreted as the
+> measured efficiency of a fabricated FR4 antenna.
+
+---
+
+## 📶 Antenna Gain
+
+Gain combines directivity with radiation efficiency:
+
+\[
+G=D\eta
+\]
+
+In dB form:
+
+\[
+G_{dBi}
+=
+D_{dBi}
++
+10\log_{10}(\eta)
+\]
+
+The simulated gain was approximately:
+
+\[
+\boxed{G\approx6.36\ dBi}
+\]
+
+---
+
+## 🔄 Design Calculation Summary
+
+| Quantity | Formula / Method | Result |
+|---|---|---:|
+| Free-space wavelength | \(\lambda_0=c/f_0\) | 124.91 mm |
+| Patch width | Standard rectangular patch equation | 38.37 mm |
+| Effective dielectric constant | Microstrip effective-\(\epsilon\) equation | 3.997 |
+| Effective length | \(L_{eff}=c/(2f_0\sqrt{\epsilon_{eff}})\) | 31.24 mm |
+| Fringing extension | \(\Delta L/h\) equation | 0.741 mm |
+| Analytical patch length | \(L=L_{eff}-2\Delta L\) | 29.76 mm |
+| Final simulated patch length | Simulation tuning | 28.95 mm |
+| Resonant frequency | Minimum S11 | ~2.405 GHz |
+| Minimum S11 | Simulation | ~−13.71 dB |
+| VSWR | \((1+|\Gamma|)/(1-|\Gamma|)\) | ~1.52 |
+| Maximum directivity | NF2FF simulation | ~6.56 dBi |
+| Radiation efficiency | \(P_{rad}/P_{accepted}\) | ~95.51% |
+| Gain | \(D\eta\) | ~6.36 dBi |
 
 ---
 
@@ -200,21 +632,56 @@ frequency.
 
 ## 📈 Plots
 
-| S11 | VSWR |
-|---|---|
-| ![S11](results/S11_plot.png) | ![VSWR](results/VSWR_plot.png) |
+### S11
 
-| E-plane | H-plane |
-|---|---|
-| ![E-plane](results/E_plane.png) | ![H-plane](results/H_plane.png) |
+![S11](results/S11_plot.png)
 
-| E-plane (polar) | H-plane (polar) |
-|---|---|
-| ![E-plane](results/E_plane_polar.png) | ![H-plane](results/H_plane_polar.png) |
+S11 is used to evaluate how much of the input signal is reflected from the
+antenna.
 
-| 3D Radiation Pattern |  |
-|looking like a globe|---|
-| ![3D_pattern](results/3D_pattern.png) |  |
+A lower S11 value indicates better impedance matching at that frequency.
+
+---
+
+### VSWR
+
+![VSWR](results/VSWR_plot.png)
+
+VSWR describes the quality of impedance matching between the antenna and the
+50 Ω feed.
+
+---
+
+### E-Plane Radiation Pattern
+
+![E-Plane](results/E_plane.png)
+
+---
+
+### H-Plane Radiation Pattern
+
+![H-Plane](results/H_plane.png)
+
+---
+
+### 3D Radiation Pattern
+
+![3D Radiation Pattern](results/3D_pattern.png)
+
+Simulated 3D Radiation Pattern is spherical which is not desirable for proper 
+of the results below are the polar plots of E-plane and H-plane.
+
+---
+
+### E-Plane (Polar)
+
+![E-plane](results/E_plane_polar.png)
+
+---
+
+### H-Plane (Polar)
+
+![H-plane](results/H_plane_polar.png)
 
 ---
 
@@ -288,25 +755,20 @@ else time:
 
 ## ⚠️ Limitations
 
-- Conductors are modeled as perfect electric conductors (PEC) — zero
-  conductor loss.
-- The FR4 substrate is modeled with εᵣ = 4.3 only, no dielectric loss
-  tangent — i.e., a lossless dielectric.
-- As a result, the 95.5% radiation efficiency reflects how completely the
-  FDTD simulation's stored energy had radiated out by the solver's end
-  criterion, **not** a hardware efficiency prediction. A fabricated FR4
-  antenna with a realistic loss tangent (~0.02) would show lower efficiency
-  and somewhat wider bandwidth.
-- S11, VSWR, and radiation pattern *shape* (lobe direction, beamwidth, null
-  positions) are geometry/resonance-driven and expected to transfer more
-  directly to a real prototype than the efficiency/gain figures.
+The current simulation has several limitations:
+- The FR4 model is treated as lossless.
+- No fabricated antenna was measured using a Vector Network Analyzer (VNA).
+- Connector and cable losses are not included.
+- Manufacturing tolerances are not included.
+- The simulated results may differ from a physically fabricated antenna.
 
 ---
 
-## 📬 Author
+## 👨‍💻 Author
 
-- Akkala Hemanth Kumar
-- Final year Electronics and Communication Engineering
+- Hemanth Kumar Akkala
+- B.Tech — Electronics and Communication Engineering
+- Interested in Embedded Systems, Electronics, RF/Antennas and Robotics.
 
 <p align="left">
   <a href="https://www.linkedin.com/in/hemanth-kumar-akkala/"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" /></a>
